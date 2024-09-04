@@ -29,6 +29,19 @@ def get_sum_of_digits():
         return jsonify({'error': 'Invalid number format'}), 400
 
     return jsonify({'sum_of_digits': result})
+@app.route('/isMess', methods=['GET'])
+def isMess():
+    name = request.args.get('mname')
+    if name is None:
+        return jsonify({'error': 'Scan again'}), 400
+
+    result = ''
+    if name == "BH6M02":
+        result = "Mess-2 BH-6"
+    if result is None:
+        return jsonify({'error': 'Invalid Mess'}), 400
+
+    return jsonify({'Acess granted to': result})
 
 if __name__ == '__main__':
     app.run(debug=True)
