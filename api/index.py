@@ -56,7 +56,7 @@ def getData():
         if len(users) == 0:
             return {"detail": "No user found."}
 
-        return(users[0])
+        return{users[0]}
     except:
         return "error-2"
 
