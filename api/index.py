@@ -1,5 +1,4 @@
 from flask import Flask
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -42,6 +41,24 @@ def isMess():
         return jsonify({'error': 'Invalid Mess'}), 400
 
     return jsonify({'Acess granted to': result})
+@app.route('/getData', methods=['GET'])
+def search_user_from_lpu_live_route():
+    id = request.args.get('id')
+    token = "9daacfb1e97a628660431de6c9442481"
+    url = "https://lpulive.lpu.in/fugu-api/api/chat/groupChatSearch?en_user_id={}&search_text={}&user_role=USER".format(
+        token, id
+    )
+    try:
+        res = requests.get(
+            url, headers={"app_version": "1.0.0", "device_type": "WEB"}
+        ).json()
+        users = res["data"]["users"]
+        if len(users) == 0:
+            return {"detail": "No user found."}
+
+        return(users[0])
+    except:
+        return "error"
 
 if __name__ == '__main__':
     app.run(debug=True)
