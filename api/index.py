@@ -42,7 +42,7 @@ def isMess():
 
     return jsonify({'Acess granted to': result})
 @app.route('/getData', methods=['GET'])
-def search_user_from_lpu_live_route():
+def getData():
     id = request.args.get('id')
     token = "9daacfb1e97a628660431de6c9442481"
     url = "https://lpulive.lpu.in/fugu-api/api/chat/groupChatSearch?en_user_id={}&search_text={}&user_role=USER".format(
