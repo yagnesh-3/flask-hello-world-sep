@@ -58,7 +58,7 @@ def getData():
 
         return{"users" : users}
     except:
-        return {"error":"error-2"}
+        return {"error":id}
 
 # @app.route('/getData', methods=['GET'])
 # def getData():
