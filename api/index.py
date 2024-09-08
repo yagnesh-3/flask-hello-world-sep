@@ -43,7 +43,7 @@ def isMess():
     return jsonify({'Acess granted to': result})
 @app.route('/getData', methods=['GET'])
 def getData():
-    id = str(request.args.get('id'))
+    id = "12224152"
     token = "9daacfb1e97a628660431de6c9442481"
     url = "https://lpulive.lpu.in/fugu-api/api/chat/groupChatSearch?en_user_id={}&search_text={}&user_role=USER".format(
         token, id
