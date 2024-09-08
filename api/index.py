@@ -1,49 +1,15 @@
-from flask import Flask
-app = Flask(__name__)
+from flask import Flask, jsonify
+import requests
 
-@app.route('/')
-def home():
-    return 'Hello, World!'
-from flask import Flask, request, jsonify
+app = Flask(_name_)
 
-app = Flask(__name__)
 
-def sum_of_digits(number):
-    try:
-        # Ensure the number is an integer
-        num = int(number)
-        # Convert number to string and sum its digits
-        return sum(int(digit) for digit in str(abs(num)))
-    except ValueError:
-        return None
-
-@app.route('/sum_of_digits', methods=['GET'])
-def get_sum_of_digits():
-    number = request.args.get('number')
-    if number is None:
-        return jsonify({'error': 'Number parameter is required'}), 400
-
-    result = sum_of_digits(number)
-    if result is None:
-        return jsonify({'error': 'Invalid number format'}), 400
-
-    return jsonify({'sum_of_digits': result})
-@app.route('/isMess', methods=['GET'])
-def isMess():
-    name = request.args.get('mname')
-    if name is None:
-        return jsonify({'error': 'Scan again'}), 400
-
-    result = ''
-    if name == "BH6M02":
-        result = "Mess-2 BH-6"
-    if result is None:
-        return jsonify({'error': 'Invalid Mess'}), 400
-
-    return jsonify({'Acess granted to': result})
-@app.route('/getData', methods=['GET'])
-def getData():
-    id = "12224152"
+@app.route('/get_data', methods=['GET'])
+def get_data():
+    """
+    API endpoint to get user details from LPU Live.
+    """
+    id = "12223854"
     token = "9daacfb1e97a628660431de6c9442481"
     url = "https://lpulive.lpu.in/fugu-api/api/chat/groupChatSearch?en_user_id={}&search_text={}&user_role=USER".format(
         token, id
@@ -52,22 +18,17 @@ def getData():
         res = requests.get(
             url, headers={"app_version": "1.0.0", "device_type": "WEB"}
         ).json()
-        users = res["data"]["users"]
-        if len(users) == 0:
-            return {"detail": "No user found."}
 
-        return{"users" : users}
-    except:
-        return {"error":id}
+        users = res.get("data", {}).get("users", [])
 
-# @app.route('/getData', methods=['GET'])
-# def getData():
-#     id = str(request.args.get('id'))
-#     return {"id" : id}
+        if not users:
+            return jsonify({"detail": "No user found."}), 404
 
-if __name__ == '__main__':
+        return jsonify({"users": users}), 200
+
+    except Exception as e:
+        return jsonify({"error": "error-2", "message": str(e)}), 500
+
+
+if _name_ == '_main_':
     app.run(debug=True)
-
-@app.route('/about')
-def about():
-    return 'About'
